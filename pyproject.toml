@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "notrack"
+dynamic = ["version"]
+description = "Official Python SDK for the NoTrack dispatch API — streaming SSE chat, typed events, bounded retries, cookie auth."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "3MH Technologies", email = "contact@3mh.pages.dev" },
+]
+keywords = ["notrack", "sse", "streaming", "chat", "ai", "httpx", "asyncio"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+    "Framework :: AsyncIO",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "mypy>=1.10",
+    "ruff>=0.5",
+    "build>=1.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/3MH-Technologies/notrack"
+Repository = "https://github.com/3MH-Technologies/notrack"
+Issues = "https://github.com/3MH-Technologies/notrack/issues"
+Changelog = "https://github.com/3MH-Technologies/notrack/releases"
+
+[tool.hatch.version]
+path = "src/notrack/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/notrack"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/notrack", "tests", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "SIM", "PL"]
+ignore = ["PLR0913", "PLR0914", "PLR0915", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Assertions read better with literal expected values.
+"tests/*" = ["PLR2004"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+files = ["src/notrack", "tests"]
+
+# numpy arrives transitively through pytest internals (_pytest._io.saferepr)
+# and its stubs use 3.12+ syntax that is irrelevant to this package. Skipping
+# those roots keeps our own code fully strict-checked. Side effect: pytest's
+# decorators become Any in tests, so untyped-decorator is disabled there only.
+[[tool.mypy.overrides]]
+module = ["_pytest.*", "pytest.*", "numpy", "numpy.*"]
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = ["conftest", "test_client", "test_config", "test_events", "test_models"]
+disable_error_code = ["untyped-decorator"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+filterwarnings = ["ignore::pytest.PytestUnknownMarkWarning"]
