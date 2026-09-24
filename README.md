@@ -1,5 +1,10 @@
 # notrack
 
+[![CI](https://github.com/3MH-Technologies/notrack/actions/workflows/ci.yml/badge.svg)](https://github.com/3MH-Technologies/notrack/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://github.com/3MH-Technologies/notrack)
+[![Typed](https://img.shields.io/badge/mypy-strict-blue.svg)](https://mypy-lang.org/)
+
 > Official Python SDK for the NoTrack dispatch API — streaming SSE chat, typed events, bounded retries, cookie auth.
 
 **Install**
