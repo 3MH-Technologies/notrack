@@ -10,8 +10,6 @@
 **Install**
 
 ```bash
-pip install notrack
-# or from source
 pip install "git+https://github.com/3MH-Technologies/notrack.git"
 ```
 
